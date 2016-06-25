@@ -304,8 +304,9 @@ public class CommonManager {
             HostObjectUtil.invalidNumberOfArgs("RhinoTopLevel", functionName, argsCount, false);
         }
         OutputStream out = (OutputStream) jaggeryContext.getProperty(CommonManager.JAGGERY_OUTPUT_STREAM);
-        if (args[0] instanceof StreamHostObject) {
-            InputStream in = ((StreamHostObject) args[0]).getStream();
+        Object printObj = args[0];
+        if (printObj instanceof StreamHostObject) {
+            InputStream in = ((StreamHostObject) printObj).getStream();
             ReadableByteChannel inputChannel = null;
             WritableByteChannel outputChannel = null;
             FileChannel fc = null;
@@ -323,7 +324,7 @@ public class CommonManager {
             }
         } else {
             try {
-                out.write(HostObjectUtil.serializeObject(args[0]).getBytes());
+                out.write(HostObjectUtil.serializeObject(printObj).getBytes());
             } catch (IOException e) {
                 if (log.isDebugEnabled()) {
                     log.debug(e.getMessage(), e);
@@ -347,7 +348,7 @@ public class CommonManager {
         }
     }
 
-    public static JaggeryContext getJaggeryContext() {
+    public static JaggeryContext getprJaggeryContext() {
         return (JaggeryContext) RhinoEngine.getContextProperty(EngineConstants.JAGGERY_CONTEXT);
     }
 
